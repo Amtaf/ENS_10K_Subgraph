@@ -1,6 +1,37 @@
-type ExampleEntity @entity {
+type Domain @entity{
   id: ID!
-  count: BigInt!
-  owner: Bytes! # address
-  approved: Bytes! # address
+  tokenId:BigInt!
+  name:String!
+  labelName:String
+  labelHash:Bytes!
+  owner:OwnerAccount!
+  createdAt:BigInt!
+  duration:BigInt!
+  expires:BigInt!
+
+
 }
+
+type OwnerAccount @entity{
+  id:ID!
+  address:Bytes!
+  domain:[Domain!]! @derivedFrom(field: "owner")
+
+}
+
+# type RegisteredDomain @entity{
+#   id:ID!
+#   owner:OwnerAccount
+#   expires:BigInt!
+#   domain:
+#   cost:BigInt!
+# }
+
+
+
+
+# type RenewedDomain @entity{
+#   id:
+#   expires:
+  
+# }
