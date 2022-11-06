@@ -9,6 +9,7 @@ This documentation supports the building of the ENS subgraph.
 * and other information about the domains like when they were **renewed** and **registered**, and for **how much**.
 
 ***To-Dos***
+
 The diagram and description of the ecosystem in relation to the subgraph.
 
 *What to identify:*
@@ -24,9 +25,12 @@ The diagram and description of the ecosystem in relation to the subgraph.
 Ecosystem diagram https://drive.google.com/file/d/1A34ur8KzYyQTz6libjiVAQsnjSpfHxZl/view?usp=sharing
 
 **State Stored In smart Contract**
+
 Arrays,Struct,Mappings,Events
 Whats being stored?
+
 **ENSRegistry.sol**
+
  struct Record {
         address owner;
         address resolver;
@@ -42,25 +46,29 @@ mapping(bytes32 => Record) records;
  function recordExists(bytes32 node)
  
 ** Events**
+
 Transfer(node, owner)
     
 **BaseRegistrar.sol**
-// Mapping from token ID to owner
+
+Mapping from token ID to owner
     mapping (uint256 => address) private _tokenOwner;
     
-// Mapping from owner to number of owned token
+Mapping from owner to number of owned token
     mapping (address => uint256) private _ownedTokensCount;
 
- // A map of expiry times
+A map of expiry time
     mapping(uint256 => uint256) expiries;
     
-  A map of addresses that are authorised to register and renew names.
+A map of addresses that are authorised to register and renew names.
     mapping(address => bool) public controllers;
 
 **Ecosystem Roles(e.g OnlyOwner,Admin)**
+
 onlyController() modifier
 
 **State Changing Functions**
+
 Gets the owner of the specified token ID
 function ownerOf(uint256 tokenId) public view returns (address)
 
@@ -98,6 +106,7 @@ NameRenewed (uint256 id, uint256 expires)
 * Get the expiry date of the renewed name
 
 **Characteristics of the 10k club ENS**
+
 Should have a name,description,tokenId,creation Date,Registration date,Expiration Date & Attributes
 
 attributes[
