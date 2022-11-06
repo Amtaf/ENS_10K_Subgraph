@@ -1,4 +1,4 @@
-**ENS-Ethereum Naming System Subgraph Document.**
+**ENS-Ethereum Naming System Subgraph Documentation.**
 
 This documentation supports the building of the ENS subgraph.
 
