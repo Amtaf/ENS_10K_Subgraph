@@ -19,19 +19,21 @@ type OwnerAccount @entity{
 
 }
 
-# type RegisteredDomain @entity{
-#   id:ID!
-#   owner:OwnerAccount
-#   expires:BigInt!
-#   domain:
-#   cost:BigInt!
-# }
+ type RegisteredDomain @entity{
+  id:ID!
+  owner:OwnerAccount!
+  registrationDate:BigInt
+  expires:BigInt!
+  domain:Domain
+  cost:BigInt!
+  labelName:String!
+}
 
 
+type RenewedDomain @entity{
+ id:ID!
+ owner:OwnerAccount!
+ RenewedDomain:Domain
+ expires:BigInt!
+ }
 
-
-# type RenewedDomain @entity{
-#   id:
-#   expires:
-  
-# }

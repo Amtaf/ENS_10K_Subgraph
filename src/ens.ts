@@ -7,6 +7,7 @@ import {
 } from "../generated/ENS/ENS"
 import { getOrCreateAccount ,createDomain, getDomain } from "./ens-helper"
 
+//will be used for cheking transfers or destroying a token
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 export function handleNameRegistered(event: NameRegistered): void{
