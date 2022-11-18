@@ -172,3 +172,244 @@ export class OwnerAccount extends Entity {
     this.set("domain", Value.fromStringArray(value));
   }
 }
+
+export class RegisteredName extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save RegisteredName entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type RegisteredName must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("RegisteredName", id.toString(), this);
+    }
+  }
+
+  static load(id: string): RegisteredName | null {
+    return changetype<RegisteredName | null>(store.get("RegisteredName", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get owner(): string {
+    let value = this.get("owner");
+    return value!.toString();
+  }
+
+  set owner(value: string) {
+    this.set("owner", Value.fromString(value));
+  }
+
+  get registrationDate(): BigInt | null {
+    let value = this.get("registrationDate");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
+  }
+
+  set registrationDate(value: BigInt | null) {
+    if (!value) {
+      this.unset("registrationDate");
+    } else {
+      this.set("registrationDate", Value.fromBigInt(<BigInt>value));
+    }
+  }
+
+  get expires(): BigInt {
+    let value = this.get("expires");
+    return value!.toBigInt();
+  }
+
+  set expires(value: BigInt) {
+    this.set("expires", Value.fromBigInt(value));
+  }
+
+  get domain(): string {
+    let value = this.get("domain");
+    return value!.toString();
+  }
+
+  set domain(value: string) {
+    this.set("domain", Value.fromString(value));
+  }
+
+  get cost(): BigInt {
+    let value = this.get("cost");
+    return value!.toBigInt();
+  }
+
+  set cost(value: BigInt) {
+    this.set("cost", Value.fromBigInt(value));
+  }
+
+  get labelName(): string {
+    let value = this.get("labelName");
+    return value!.toString();
+  }
+
+  set labelName(value: string) {
+    this.set("labelName", Value.fromString(value));
+  }
+
+  get name(): string {
+    let value = this.get("name");
+    return value!.toString();
+  }
+
+  set name(value: string) {
+    this.set("name", Value.fromString(value));
+  }
+}
+
+export class RenewedName extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save RenewedName entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type RenewedName must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("RenewedName", id.toString(), this);
+    }
+  }
+
+  static load(id: string): RenewedName | null {
+    return changetype<RenewedName | null>(store.get("RenewedName", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get owner(): string {
+    let value = this.get("owner");
+    return value!.toString();
+  }
+
+  set owner(value: string) {
+    this.set("owner", Value.fromString(value));
+  }
+
+  get name(): string {
+    let value = this.get("name");
+    return value!.toString();
+  }
+
+  set name(value: string) {
+    this.set("name", Value.fromString(value));
+  }
+
+  get label(): Bytes {
+    let value = this.get("label");
+    return value!.toBytes();
+  }
+
+  set label(value: Bytes) {
+    this.set("label", Value.fromBytes(value));
+  }
+
+  get RenewedDomain(): string {
+    let value = this.get("RenewedDomain");
+    return value!.toString();
+  }
+
+  set RenewedDomain(value: string) {
+    this.set("RenewedDomain", Value.fromString(value));
+  }
+
+  get expires(): BigInt {
+    let value = this.get("expires");
+    return value!.toBigInt();
+  }
+
+  set expires(value: BigInt) {
+    this.set("expires", Value.fromBigInt(value));
+  }
+
+  get cost(): BigInt {
+    let value = this.get("cost");
+    return value!.toBigInt();
+  }
+
+  set cost(value: BigInt) {
+    this.set("cost", Value.fromBigInt(value));
+  }
+}
+
+export class OwnershipTransferred extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save OwnershipTransferred entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type OwnershipTransferred must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("OwnershipTransferred", id.toString(), this);
+    }
+  }
+
+  static load(id: string): OwnershipTransferred | null {
+    return changetype<OwnershipTransferred | null>(
+      store.get("OwnershipTransferred", id)
+    );
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get previousOwner(): Bytes {
+    let value = this.get("previousOwner");
+    return value!.toBytes();
+  }
+
+  set previousOwner(value: Bytes) {
+    this.set("previousOwner", Value.fromBytes(value));
+  }
+
+  get newOwner(): Bytes {
+    let value = this.get("newOwner");
+    return value!.toBytes();
+  }
+
+  set newOwner(value: Bytes) {
+    this.set("newOwner", Value.fromBytes(value));
+  }
+}

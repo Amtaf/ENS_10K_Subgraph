@@ -14,12 +14,14 @@ The diagram and description of the ecosystem in relation to the subgraph.
 
 *What to identify:*
 
-
+ 
 | Contract Details       |                                            |
 | ---------------------- | ------------------------------------------ |
-| Smart Contract Address | 0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85 |
-| Name                   |  ENS-Ethereum Naming Service                                          |
-| Start Block            |  15896076                                          |
+| Smart Contract Address new | 0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85 |
+|EthRegistrarController Address  | 0x283Af0B28c62C092C9727F1Ee09c02CA627EB7F5|
+| Name                   |  ENS-Ethereum Naming Service                    |
+| Start Block new contract|  15896076                                          |
+| old controller startBlock|  15994722                                       |
 | Role                   |  provide a way for users to map human readable names to blockchain and non-blockchain resources                                           |
 
 Ecosystem diagram https://drive.google.com/file/d/1A34ur8KzYyQTz6libjiVAQsnjSpfHxZl/view?usp=sharing

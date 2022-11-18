@@ -19,21 +19,41 @@ type OwnerAccount @entity{
 
 }
 
- type RegisteredDomain @entity{
+ type RegisteredName @entity{
   id:ID!
   owner:OwnerAccount!
   registrationDate:BigInt
   expires:BigInt!
-  domain:Domain
+  domain:Domain!
   cost:BigInt!
   labelName:String!
+  name:String!
 }
 
 
-type RenewedDomain @entity{
+type RenewedName @entity{
  id:ID!
  owner:OwnerAccount!
- RenewedDomain:Domain
+ name: String!
+ label:Bytes!
+ RenewedDomain:Domain!
  expires:BigInt!
+ cost: BigInt!
  }
 
+# type EthRegistrarControllerNameRegistered @entity {
+#   id: ID!
+#   name: String! # string
+#   label: Bytes! # bytes32
+#   owner: Bytes! # address
+#   cost: BigInt! # uint256
+#   expires: BigInt! # uint256
+# }
+
+
+
+type OwnershipTransferred @entity {
+  id: ID!
+  previousOwner: Bytes! # address
+  newOwner: Bytes! # address
+}

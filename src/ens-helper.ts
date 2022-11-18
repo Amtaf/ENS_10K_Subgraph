@@ -2,7 +2,7 @@ import { Address, BigInt, Bytes } from "@graphprotocol/graph-ts"
 import {
   ENS
 } from "../generated/ENS/ENS"
-import { Domain,OwnerAccount } from "../generated/schema";
+import { Domain,OwnerAccount,RegisteredName,RenewedName } from "../generated/schema";
 
 //function to create or get Domain Owner Account
 export function getOrCreateAccount(address: Bytes): OwnerAccount{
@@ -36,4 +36,19 @@ export function getDomain(tokenId: BigInt): Domain | null{
 
 }
 //get or create domain registered
+//owner:string, registrationDate:BigInt, expires:BigInt, cost: BigInt, 
+export function getOrCreateNameRegistered(id: string, labelName: string): RegisteredName {
+ let Name = RegisteredName.load(id);
+    if(Name==null){
+      Name = new RegisteredName(id)
+      Name.labelName=labelName;
+      Name.save()
+    }
+return Name;
+}
 //get domain name to be renewed
+export function renewName(id: string): RenewedName{
+  let renewed = RenewedName.load(id);
+  return renewed as RenewedName
+
+}
