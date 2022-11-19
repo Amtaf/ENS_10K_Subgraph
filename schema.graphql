@@ -1,4 +1,4 @@
-type Domain @entity{
+type Domain @entity (immutable: true){
   id: ID!
   tokenId:BigInt!
   name:String!
@@ -13,26 +13,24 @@ type Domain @entity{
 }
 
 type OwnerAccount @entity{
-  id:ID!
-  address:Bytes!
-  domain:[Domain!]! @derivedFrom(field: "owner")
+  id:Bytes!
+  # address:Bytes!
+  # domain:[Domain!]! @derivedFrom(field: "owner")
 
 }
 
  type RegisteredName @entity{
-  id:ID!
+  id:Bytes!
   owner:OwnerAccount!
+  updateRegistry: Boolean! 
+  duration: BigInt!
   registrationDate:BigInt
-  expires:BigInt!
-  domain:Domain!
-  cost:BigInt!
-  labelName:String!
-  name:String!
+  
 }
 
 
 type RenewedName @entity{
- id:ID!
+ id:Bytes!
  owner:OwnerAccount!
  name: String!
  label:Bytes!

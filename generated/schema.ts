@@ -86,13 +86,13 @@ export class Domain extends Entity {
     this.set("labelHash", Value.fromBytes(value));
   }
 
-  get owner(): string {
+  get owner(): Bytes {
     let value = this.get("owner");
-    return value!.toString();
+    return value!.toBytes();
   }
 
-  set owner(value: string) {
-    this.set("owner", Value.fromString(value));
+  set owner(value: Bytes) {
+    this.set("owner", Value.fromBytes(value));
   }
 
   get createdAt(): BigInt {
@@ -124,9 +124,9 @@ export class Domain extends Entity {
 }
 
 export class OwnerAccount extends Entity {
-  constructor(id: string) {
+  constructor(id: Bytes) {
     super();
-    this.set("id", Value.fromString(id));
+    this.set("id", Value.fromBytes(id));
   }
 
   save(): void {
@@ -134,49 +134,33 @@ export class OwnerAccount extends Entity {
     assert(id != null, "Cannot save OwnerAccount entity without an ID");
     if (id) {
       assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type OwnerAccount must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        id.kind == ValueKind.BYTES,
+        `Entities of type OwnerAccount must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("OwnerAccount", id.toString(), this);
+      store.set("OwnerAccount", id.toBytes().toHexString(), this);
     }
   }
 
-  static load(id: string): OwnerAccount | null {
-    return changetype<OwnerAccount | null>(store.get("OwnerAccount", id));
+  static load(id: Bytes): OwnerAccount | null {
+    return changetype<OwnerAccount | null>(
+      store.get("OwnerAccount", id.toHexString())
+    );
   }
 
-  get id(): string {
+  get id(): Bytes {
     let value = this.get("id");
-    return value!.toString();
-  }
-
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
-  }
-
-  get address(): Bytes {
-    let value = this.get("address");
     return value!.toBytes();
   }
 
-  set address(value: Bytes) {
-    this.set("address", Value.fromBytes(value));
-  }
-
-  get domain(): Array<string> {
-    let value = this.get("domain");
-    return value!.toStringArray();
-  }
-
-  set domain(value: Array<string>) {
-    this.set("domain", Value.fromStringArray(value));
+  set id(value: Bytes) {
+    this.set("id", Value.fromBytes(value));
   }
 }
 
 export class RegisteredName extends Entity {
-  constructor(id: string) {
+  constructor(id: Bytes) {
     super();
-    this.set("id", Value.fromString(id));
+    this.set("id", Value.fromBytes(id));
   }
 
   save(): void {
@@ -184,33 +168,53 @@ export class RegisteredName extends Entity {
     assert(id != null, "Cannot save RegisteredName entity without an ID");
     if (id) {
       assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type RegisteredName must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        id.kind == ValueKind.BYTES,
+        `Entities of type RegisteredName must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("RegisteredName", id.toString(), this);
+      store.set("RegisteredName", id.toBytes().toHexString(), this);
     }
   }
 
-  static load(id: string): RegisteredName | null {
-    return changetype<RegisteredName | null>(store.get("RegisteredName", id));
+  static load(id: Bytes): RegisteredName | null {
+    return changetype<RegisteredName | null>(
+      store.get("RegisteredName", id.toHexString())
+    );
   }
 
-  get id(): string {
+  get id(): Bytes {
     let value = this.get("id");
-    return value!.toString();
+    return value!.toBytes();
   }
 
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
+  set id(value: Bytes) {
+    this.set("id", Value.fromBytes(value));
   }
 
-  get owner(): string {
+  get owner(): Bytes {
     let value = this.get("owner");
-    return value!.toString();
+    return value!.toBytes();
   }
 
-  set owner(value: string) {
-    this.set("owner", Value.fromString(value));
+  set owner(value: Bytes) {
+    this.set("owner", Value.fromBytes(value));
+  }
+
+  get updateRegistry(): boolean {
+    let value = this.get("updateRegistry");
+    return value!.toBoolean();
+  }
+
+  set updateRegistry(value: boolean) {
+    this.set("updateRegistry", Value.fromBoolean(value));
+  }
+
+  get duration(): BigInt {
+    let value = this.get("duration");
+    return value!.toBigInt();
+  }
+
+  set duration(value: BigInt) {
+    this.set("duration", Value.fromBigInt(value));
   }
 
   get registrationDate(): BigInt | null {
@@ -229,57 +233,12 @@ export class RegisteredName extends Entity {
       this.set("registrationDate", Value.fromBigInt(<BigInt>value));
     }
   }
-
-  get expires(): BigInt {
-    let value = this.get("expires");
-    return value!.toBigInt();
-  }
-
-  set expires(value: BigInt) {
-    this.set("expires", Value.fromBigInt(value));
-  }
-
-  get domain(): string {
-    let value = this.get("domain");
-    return value!.toString();
-  }
-
-  set domain(value: string) {
-    this.set("domain", Value.fromString(value));
-  }
-
-  get cost(): BigInt {
-    let value = this.get("cost");
-    return value!.toBigInt();
-  }
-
-  set cost(value: BigInt) {
-    this.set("cost", Value.fromBigInt(value));
-  }
-
-  get labelName(): string {
-    let value = this.get("labelName");
-    return value!.toString();
-  }
-
-  set labelName(value: string) {
-    this.set("labelName", Value.fromString(value));
-  }
-
-  get name(): string {
-    let value = this.get("name");
-    return value!.toString();
-  }
-
-  set name(value: string) {
-    this.set("name", Value.fromString(value));
-  }
 }
 
 export class RenewedName extends Entity {
-  constructor(id: string) {
+  constructor(id: Bytes) {
     super();
-    this.set("id", Value.fromString(id));
+    this.set("id", Value.fromBytes(id));
   }
 
   save(): void {
@@ -287,33 +246,35 @@ export class RenewedName extends Entity {
     assert(id != null, "Cannot save RenewedName entity without an ID");
     if (id) {
       assert(
-        id.kind == ValueKind.STRING,
-        `Entities of type RenewedName must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+        id.kind == ValueKind.BYTES,
+        `Entities of type RenewedName must have an ID of type Bytes but the id '${id.displayData()}' is of type ${id.displayKind()}`
       );
-      store.set("RenewedName", id.toString(), this);
+      store.set("RenewedName", id.toBytes().toHexString(), this);
     }
   }
 
-  static load(id: string): RenewedName | null {
-    return changetype<RenewedName | null>(store.get("RenewedName", id));
+  static load(id: Bytes): RenewedName | null {
+    return changetype<RenewedName | null>(
+      store.get("RenewedName", id.toHexString())
+    );
   }
 
-  get id(): string {
+  get id(): Bytes {
     let value = this.get("id");
-    return value!.toString();
+    return value!.toBytes();
   }
 
-  set id(value: string) {
-    this.set("id", Value.fromString(value));
+  set id(value: Bytes) {
+    this.set("id", Value.fromBytes(value));
   }
 
-  get owner(): string {
+  get owner(): Bytes {
     let value = this.get("owner");
-    return value!.toString();
+    return value!.toBytes();
   }
 
-  set owner(value: string) {
-    this.set("owner", Value.fromString(value));
+  set owner(value: Bytes) {
+    this.set("owner", Value.fromBytes(value));
   }
 
   get name(): string {

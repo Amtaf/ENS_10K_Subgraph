@@ -1,20 +1,23 @@
 import {
-  EthRegistrarControllerNameRegistered as EthRegistrarControllerNameRegisteredEvent,
-  EthRegistrarControllerNameRenewed as EthRegistrarControllerNameRenewedEvent,
-  NewPriceOracle as NewPriceOracleEvent,
-  EthRegistrarControllerOwnershipTransferred as EthRegistrarControllerOwnershipTransferredEvent
-} from "../generated/EthRegistrarController/EthRegistrarController"
-import {
-  EthRegistrarControllerNameRegistered,
-  EthRegistrarControllerNameRenewed,
+  NameRegistered,
+  NameRenewed,
   NewPriceOracle,
-  EthRegistrarControllerOwnershipTransferred
-} from "../generated/schema"
+  OwnershipTransferred
+} from "../generated/EthRegistrarController/EthRegistrarController"
+// import {
+//   NameRegistered,
+//   NameRenewed,
+//   NewPriceOracle,
+//   OwnershipTransferred
+// } from "../generated/schema"
+import { Domain,OwnerAccount,RegisteredName,RenewedName } from "../generated/schema";
 
-export function handleEthRegistrarControllerNameRegistered(
-  event: EthRegistrarControllerNameRegisteredEvent
+import { getOrCreateAccount ,createDomain, getDomain ,getOrCreateNameRegistered, getRenewName} from "./ens-helper"
+
+export function handleNameRegistered(
+  event: NameRegistered
 ): void {
-  let entity = new EthRegistrarControllerNameRegistered(
+  let entity = new NameRegistered(
     event.transaction.hash.toHex() + "-" + event.logIndex.toString()
   )
   entity.name = event.params.name
@@ -25,10 +28,10 @@ export function handleEthRegistrarControllerNameRegistered(
   entity.save()
 }
 
-export function handleEthRegistrarControllerNameRenewed(
-  event: EthRegistrarControllerNameRenewedEvent
+export function handleNameRenewed(
+  event: NameRenewed
 ): void {
-  let entity = new EthRegistrarControllerNameRenewed(
+  let entity = new NameRenewed(
     event.transaction.hash.toHex() + "-" + event.logIndex.toString()
   )
   entity.name = event.params.name
@@ -38,7 +41,7 @@ export function handleEthRegistrarControllerNameRenewed(
   entity.save()
 }
 
-export function handleNewPriceOracle(event: NewPriceOracleEvent): void {
+export function handleNewPriceOracle(event: NewPriceOracle): void {
   let entity = new NewPriceOracle(
     event.transaction.hash.toHex() + "-" + event.logIndex.toString()
   )
@@ -46,10 +49,10 @@ export function handleNewPriceOracle(event: NewPriceOracleEvent): void {
   entity.save()
 }
 
-export function handleEthRegistrarControllerOwnershipTransferred(
-  event: EthRegistrarControllerOwnershipTransferredEvent
+export function handleOwnershipTransferred(
+  event: OwnershipTransferred
 ): void {
-  let entity = new EthRegistrarControllerOwnershipTransferred(
+  let entity = new OwnershipTransferred(
     event.transaction.hash.toHex() + "-" + event.logIndex.toString()
   )
   entity.previousOwner = event.params.previousOwner

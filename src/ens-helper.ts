@@ -5,20 +5,36 @@ import {
 import { Domain,OwnerAccount,RegisteredName,RenewedName } from "../generated/schema";
 
 //function to create or get Domain Owner Account
-export function getOrCreateAccount(address: Bytes): OwnerAccount{
-    let account = OwnerAccount.load(address.toHexString())
+// export function getOrCreateAccount(address: Address): OwnerAccount{
+//     let account = OwnerAccount.load(address.toHexString())
     
-    if(account==null){
-        account = new OwnerAccount(address.toHexString())
-        account.address = address;
-        account.save()
-    }
-return account;
+//     if(account==null){
+//         account = new OwnerAccount(address.toHexString())
+//         account.id = address;
+//         account.save()
+//     }
+// return account;
 
+// }
+
+export function getOrCreateAccount(address: Address): OwnerAccount{
+  
+  let account = OwnerAccount.load(address)
+
+  if(account == null){
+      account = new OwnerAccount(address)
+      account.id = address
+
+      
+       account.save()
+      
+  }
+  
+  return account as OwnerAccount
 }
 
 //function to create  Domain
-export function createDomain(tokenId: BigInt, name:string, owner:string,duration:BigInt): Domain{
+export function createDomain(tokenId: BigInt, name:string, owner:Bytes ,duration:BigInt): Domain{
   let domain = new Domain(tokenId.toString());
   domain.tokenId= tokenId;
   domain.name = name;
@@ -37,18 +53,22 @@ export function getDomain(tokenId: BigInt): Domain | null{
 }
 //get or create domain registered
 //owner:string, registrationDate:BigInt, expires:BigInt, cost: BigInt, 
-export function getOrCreateNameRegistered(id: string, labelName: string): RegisteredName {
- let Name = RegisteredName.load(id);
-    if(Name==null){
-      Name = new RegisteredName(id)
-      Name.labelName=labelName;
-      Name.save()
+export function getOrCreateNameRegistered(OwnerAccount: string, duration: BigInt): RegisteredName {
+ let id = OwnerAccount.id.toHexString().concat('-').concat(duration.toString())
+  let name = RegisteredName.load(id);
+    if(name==null){
+      name = new RegisteredName(id)
+      name.owner = OwnerAccount.id;
+      name.updateRegistry = true;
+      name.duration = duration;
+
+      name.save()
     }
-return Name;
+return name;
 }
 //get domain name to be renewed
-export function renewName(id: string): RenewedName{
-  let renewed = RenewedName.load(id);
+export function getRenewName(OwnerAccount: OwnerAccount): RenewedName{
+  let renewed = RenewedName.load(OwnerAccount.id);
   return renewed as RenewedName
 
 }
