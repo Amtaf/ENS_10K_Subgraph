@@ -5,6 +5,7 @@ type Domain @entity (immutable: true){
   labelName:String
   labelHash:Bytes!
   owner:OwnerAccount!
+  previousOwner:OwnerAccount!
   createdAt:BigInt!
   duration:BigInt!
   expires:BigInt!
@@ -13,24 +14,25 @@ type Domain @entity (immutable: true){
 }
 
 type OwnerAccount @entity{
-  id:Bytes!
-  # address:Bytes!
-  # domain:[Domain!]! @derivedFrom(field: "owner")
+  id:ID!
+  address:Bytes!
+  domain:[Domain!]! @derivedFrom(field: "owner")
 
 }
 
- type RegisteredName @entity{
-  id:Bytes!
+ type RegisteredName @entity(immutable: true){
+  id:ID!
   owner:OwnerAccount!
   updateRegistry: Boolean! 
   duration: BigInt!
   registrationDate:BigInt
+  expires: BigInt!
   
 }
 
 
-type RenewedName @entity{
- id:Bytes!
+type RenewedName @entity(immutable: true){
+ id:ID!
  owner:OwnerAccount!
  name: String!
  label:Bytes!

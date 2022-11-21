@@ -1,4 +1,4 @@
-import {Address, BigInt, Bytes } from "@graphprotocol/graph-ts"
+import {Address, BigInt, Bytes,ens } from "@graphprotocol/graph-ts"
 import {
   NameRegistered,
   NameRenewed,
@@ -19,14 +19,14 @@ export function handleNameRegistered(event: NameRegistered): void{
   //check if name is in the 10k category
   let account = getOrCreateAccount(event.params.owner)
   if(account){
-    getOrCreateNameRegistered(account, event.params.expires)
+    getOrCreateNameRegistered(event.params.id.toHexString(),event.params.owner.toHexString(), event.params.expires)
   }
 }
 
 export function handleNameRenewed(event: NameRenewed): void{
 //   Get the id of the name to be renewed(event.params.id)
 //   Get the expiry date of the renewed name
-getRenewName(event.params.id)
+let renewed = getRenewName(event.params.id.toHexString())
 // 
 }
 
@@ -42,17 +42,19 @@ export function handleTransfer(event: Transfer): void{
   //mint
   // let fromId = event.params.from.toHex()
   // let toId = event.params.to.toHex()
-  // let isMint = fromId == ZERO_ADDRESS
-  // let isBurn = toId == ZERO_ADDRESS
-  
+
+  let domain = getDomain(event.params.tokenId);
   let account = getOrCreateAccount(event.params.from)
   if(account){
-    getDomain(event.params.tokenId);
+   domain
   }
   
-  getOrCreateAccount(event.params.from) 
-  getOrCreateAccount(event.params.to)
- 
+  let previousOwner = getOrCreateAccount(event.params.from) 
+  let newOwner = getOrCreateAccount(event.params.to)
+ if(domain!=null){
+  domain.previousOwner = previousOwner.id;
+  domain.owner = newOwner.id;
+ }
     
   
  
