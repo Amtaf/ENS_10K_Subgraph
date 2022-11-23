@@ -22,9 +22,12 @@ type OwnerAccount @entity{
 
  type RegisteredName @entity(immutable: true){
   id:ID!
+  domain:Domain!
   owner:OwnerAccount!
   updateRegistry: Boolean! 
-  duration: BigInt!
+  cost:BigInt!
+  labelName:String!
+  name:String!
   registrationDate:BigInt
   expires: BigInt!
   

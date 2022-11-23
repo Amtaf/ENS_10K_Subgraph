@@ -213,6 +213,15 @@ export class RegisteredName extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get domain(): string {
+    let value = this.get("domain");
+    return value!.toString();
+  }
+
+  set domain(value: string) {
+    this.set("domain", Value.fromString(value));
+  }
+
   get owner(): string {
     let value = this.get("owner");
     return value!.toString();
@@ -231,13 +240,31 @@ export class RegisteredName extends Entity {
     this.set("updateRegistry", Value.fromBoolean(value));
   }
 
-  get duration(): BigInt {
-    let value = this.get("duration");
+  get cost(): BigInt {
+    let value = this.get("cost");
     return value!.toBigInt();
   }
 
-  set duration(value: BigInt) {
-    this.set("duration", Value.fromBigInt(value));
+  set cost(value: BigInt) {
+    this.set("cost", Value.fromBigInt(value));
+  }
+
+  get labelName(): string {
+    let value = this.get("labelName");
+    return value!.toString();
+  }
+
+  set labelName(value: string) {
+    this.set("labelName", Value.fromString(value));
+  }
+
+  get name(): string {
+    let value = this.get("name");
+    return value!.toString();
+  }
+
+  set name(value: string) {
+    this.set("name", Value.fromString(value));
   }
 
   get registrationDate(): BigInt | null {

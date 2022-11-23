@@ -53,22 +53,26 @@ export function getDomain(tokenId: BigInt): Domain | null{
 }
 //get or create domain registered
 //owner:string, registrationDate:BigInt, expires:BigInt, cost: BigInt, 
-export function getOrCreateNameRegistered(id: string, owner: string, duration: BigInt): RegisteredName {
+export function getOrCreateNameRegistered(id: string, owner: string, expires: BigInt): RegisteredName {
   
   let name = RegisteredName.load(id);
     if(name==null){
       name = new RegisteredName(id)
       name.owner = owner;
       name.updateRegistry = true;
-      name.duration = duration;
+      name.expires = expires;
 
       name.save()
     }
 return name;
 }
 //get domain name to be renewed
-export function getRenewName(id: string): RenewedName{
+export function getOrCreateRenewedName(id: string, expires: BigInt): RenewedName{
   let renewed = RenewedName.load(id);
+  if(renewed==null){
+    renewed = new RenewedName(id);
+    renewed.expires = expires;
+  }
   return renewed as RenewedName
 
 }
