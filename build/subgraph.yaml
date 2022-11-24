@@ -1,6 +1,6 @@
 specVersion: 0.0.4
 schema:
-  file: ./schema.graphql
+  file: schema.graphql
 dataSources:
   - kind: ethereum
     name: ENS
@@ -25,7 +25,7 @@ dataSources:
         - Transfer
       abis:
         - name: ENS
-          file: ./abis/ENS.json
+          file: ENS\abis\ENS.json
       eventHandlers:
         - event: NameRegistered(indexed uint256,indexed address,uint256)
           handler: handleNameRegistered
@@ -35,7 +35,7 @@ dataSources:
           handler: handleOwnershipTransferred
         - event: Transfer(indexed address,indexed address,indexed uint256)
           handler: handleTransfer
-      file: ./src/ens.ts
+      file: ENS\ENS.wasm
   - kind: ethereum
     name: EthRegistrarController
     network: mainnet
@@ -54,13 +54,12 @@ dataSources:
         - OwnershipTransferred
       abis:
         - name: EthRegistrarController
-          file: ./abis/EthRegistrarController.json
+          file: EthRegistrarController\abis\EthRegistrarController.json
       eventHandlers:
-        - event: NameRegistered(string,indexed bytes32,indexed
-            address,uint256,uint256)
+        - event: NameRegistered(string,indexed bytes32,indexed address,uint256,uint256)
           handler: handleNameRegistered
         - event: NameRenewed(string,indexed bytes32,uint256,uint256)
           handler: handleNameRenewed
         - event: OwnershipTransferred(indexed address,indexed address)
           handler: handleOwnershipTransferred
-      file: ./src/eth-registrar-controller.ts
+      file: EthRegistrarController\EthRegistrarController.wasm

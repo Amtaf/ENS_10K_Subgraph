@@ -3,7 +3,7 @@ type Domain @entity (immutable: true){
   tokenId:BigInt!
   name:String!
   labelName:String
-  labelHash:Bytes
+  labelHash:Bytes!
   owner:OwnerAccount!
   previousOwner:OwnerAccount!
   createdAt:BigInt!

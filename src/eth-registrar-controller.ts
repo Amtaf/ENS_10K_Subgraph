@@ -22,13 +22,7 @@ export function handleNameRegistered(
 //   let entity = new NameRegistered(
 //     event.transaction.hash.toHex() + "-" + event.logIndex.toString()
 //   )
-//   entity.name = event.params.name
-//   entity.label = event.params.label
-//   entity.owner = event.params.owner
-//   entity.cost = event.params.cost
-//   entity.expires = event.params.expires
-//   entity.save()
-//
+
 let account = getOrCreateAccount(event.params.owner)
   if(account){
     let lbl = event.transaction.hash
@@ -37,7 +31,7 @@ let account = getOrCreateAccount(event.params.owner)
       log.info("Registered ENS:",[nameReg])
       if(validateNumber(nameReg)){
         getOrCreateNameRegistered(event.transaction.hash,event.params.name,event.params.label,event.params.owner.toHexString(),event.params.cost, event.params.expires)
-        
+       
 
       }
     }
@@ -74,13 +68,7 @@ if(regName){
 export function handleOwnershipTransferred(
   event: OwnershipTransferred
 ): void {
-  // let entity = new OwnershipTransferred(
-  //   event.transaction.hash.toHex() + "-" + event.logIndex.toString()
-  // )
-  // entity.previousOwner = event.params.previousOwner
-  // entity.newOwner = event.params.newOwner
-  // entity.save()
-  
+
   
   getOrCreateAccount(event.params.previousOwner) 
   getOrCreateAccount(event.params.newOwner)

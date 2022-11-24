@@ -51,6 +51,7 @@ export function createDomain(tokenId: BigInt, name:string, owner:string ,duratio
         register_name = new RegisteredName(lbl)
         register_name.owner = owner
         register_name.name = name
+        
         register_name.cost = cost
         register_name.expires=expires
         let labelName = ens.nameByHash(lbl)
