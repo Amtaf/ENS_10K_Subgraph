@@ -49,10 +49,10 @@ if(regName){
 // 
 }
 
-export function handleOwnershipTransferred(event: OwnershipTransferred): void{
-// Assign Domain from previousOwner to new owner
+// export function handleOwnershipTransferred(event: OwnershipTransferred): void{
+// // Assign Domain from previousOwner to new owner
 
-}
+// }
 
 export function handleTransfer(event: Transfer): void{
   // Get the Domain from the DB
