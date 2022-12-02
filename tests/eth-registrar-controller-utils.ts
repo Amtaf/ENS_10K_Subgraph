@@ -1,10 +1,9 @@
 import { newMockEvent } from "matchstick-as"
 import { ethereum, Bytes, Address, BigInt } from "@graphprotocol/graph-ts"
 import {
-  EthRegistrarControllerNameRegistered,
-  EthRegistrarControllerNameRenewed,
-  NewPriceOracle,
-  EthRegistrarControllerOwnershipTransferred
+  NameRegistered,
+  NameRenewed,
+  OwnershipTransferred
 } from "../generated/EthRegistrarController/EthRegistrarController"
 
 export function createEthRegistrarControllerNameRegisteredEvent(
@@ -13,9 +12,9 @@ export function createEthRegistrarControllerNameRegisteredEvent(
   owner: Address,
   cost: BigInt,
   expires: BigInt
-): EthRegistrarControllerNameRegistered {
+): NameRegistered {
   let ethRegistrarControllerNameRegisteredEvent = changetype<
-    EthRegistrarControllerNameRegistered
+    NameRegistered
   >(newMockEvent())
 
   ethRegistrarControllerNameRegisteredEvent.parameters = new Array()
@@ -47,9 +46,9 @@ export function createEthRegistrarControllerNameRenewedEvent(
   label: Bytes,
   cost: BigInt,
   expires: BigInt
-): EthRegistrarControllerNameRenewed {
+): NameRenewed {
   let ethRegistrarControllerNameRenewedEvent = changetype<
-    EthRegistrarControllerNameRenewed
+    NameRenewed
   >(newMockEvent())
 
   ethRegistrarControllerNameRenewedEvent.parameters = new Array()
@@ -73,24 +72,13 @@ export function createEthRegistrarControllerNameRenewedEvent(
   return ethRegistrarControllerNameRenewedEvent
 }
 
-export function createNewPriceOracleEvent(oracle: Address): NewPriceOracle {
-  let newPriceOracleEvent = changetype<NewPriceOracle>(newMockEvent())
-
-  newPriceOracleEvent.parameters = new Array()
-
-  newPriceOracleEvent.parameters.push(
-    new ethereum.EventParam("oracle", ethereum.Value.fromAddress(oracle))
-  )
-
-  return newPriceOracleEvent
-}
 
 export function createEthRegistrarControllerOwnershipTransferredEvent(
   previousOwner: Address,
   newOwner: Address
-): EthRegistrarControllerOwnershipTransferred {
+): OwnershipTransferred {
   let ethRegistrarControllerOwnershipTransferredEvent = changetype<
-    EthRegistrarControllerOwnershipTransferred
+    OwnershipTransferred
   >(newMockEvent())
 
   ethRegistrarControllerOwnershipTransferredEvent.parameters = new Array()

@@ -77,13 +77,21 @@ export class Domain extends Entity {
     }
   }
 
-  get labelHash(): Bytes {
+  get labelHash(): Bytes | null {
     let value = this.get("labelHash");
-    return value!.toBytes();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBytes();
+    }
   }
 
-  set labelHash(value: Bytes) {
-    this.set("labelHash", Value.fromBytes(value));
+  set labelHash(value: Bytes | null) {
+    if (!value) {
+      this.unset("labelHash");
+    } else {
+      this.set("labelHash", Value.fromBytes(<Bytes>value));
+    }
   }
 
   get owner(): string {
@@ -359,6 +367,15 @@ export class RenewedName extends Entity {
 
   set RenewedDomain(value: string) {
     this.set("RenewedDomain", Value.fromString(value));
+  }
+
+  get Registration(): string {
+    let value = this.get("Registration");
+    return value!.toString();
+  }
+
+  set Registration(value: string) {
+    this.set("Registration", Value.fromString(value));
   }
 
   get expires(): BigInt {

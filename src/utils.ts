@@ -1,4 +1,9 @@
-import {  BigInt, Bytes,  ByteArray,ens} from "@graphprotocol/graph-ts"
+import {  BigInt, Bytes,  ByteArray,ens, ethereum} from "@graphprotocol/graph-ts"
+
+export function createEventID(event:  ethereum.Event): string {
+  return event.block.number.toString().concat('-').concat(event.logIndex.toString())
+}
+
 //convert hex to byteArray
 export function byteArrayFromHex(s: string): ByteArray {
     if(s.length % 2 !== 0) {

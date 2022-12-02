@@ -3,11 +3,12 @@ import {
   NameRegistered,
   NameRenewed,
   OwnershipTransferred,
+  RenewCall,
   Transfer
 } from "../generated/ENS/ENS"
 import { Domain,OwnerAccount,RegisteredName,RenewedName } from "../generated/schema";
 import { getOrCreateAccount ,createDomain, getDomain ,getOrCreateNameRegistered, getOrCreateRenewedName} from "./ens-helper"
-import { uint256ToByteArray, validateNumber } from "./utils";
+import { byteArrayFromHex, createEventID, uint256ToByteArray, validateNumber } from "./utils";
 
 //will be used for cheking transfers or destroying a token
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
@@ -23,6 +24,7 @@ export function handleNameRegistered(event: NameRegistered): void{
   // Get or create account of name owner(address owner)
   // Get the expiry date of the name
   //check if name is in the 10k category
+  
   let account = getOrCreateAccount(event.params.owner)
   if(account){
     let lbl = event.transaction.hash
@@ -47,6 +49,26 @@ if(regName){
   getOrCreateRenewedName(event.params.id.toHexString(),event.params.expires)
 }
 // 
+let tokenId = event.params.id.toHexString();
+let domain = Domain.load(tokenId)
+if (domain){
+  domain.expires = event.params.expires
+  domain.duration =  event.block.timestamp
+  domain.save()
+}
+let registration = RegisteredName.load(tokenId)
+  if(registration){
+    registration.expires = event.params.expires
+    registration.save()
+
+    
+    let registrationEvent = new RenewedName(createEventID(event))
+    registrationEvent.name
+    registrationEvent.expires = event.params.expires
+    registrationEvent.cost = event.transaction.value
+    registrationEvent.save()
+  }
+
 }
 
 // export function handleOwnershipTransferred(event: OwnershipTransferred): void{
@@ -61,7 +83,9 @@ export function handleTransfer(event: Transfer): void{
   //mint
   // let fromId = event.params.from.toHex()
   // let toId = event.params.to.toHex()
-  let domain = getDomain(event.params.tokenId);
+  //we create a domain during mint
+  let tokenId = event.params.tokenId.toHexString()
+  //let domain = getDomain(tokenId);
     if(event.params.from.toHexString()==ZERO_ADDRESS){
       let lbl = uint256ToByteArray(event.params.tokenId)
       let nameReg = ens.nameByHash(lbl.toHexString())
@@ -69,8 +93,12 @@ export function handleTransfer(event: Transfer): void{
       if(nameReg){
         log.info("Registered ENS:",[nameReg])
         if(validateNumber(nameReg)){
-          getOrCreateAccount(event.params.to)
-  
+          let accountCreator = getOrCreateAccount(event.params.to)
+  //Mint
+          let item = new Domain(tokenId)
+          item.owner = accountCreator.id
+        
+          item.save()
         }
       }
     }
@@ -78,10 +106,10 @@ export function handleTransfer(event: Transfer): void{
   
   let previousOwner = getOrCreateAccount(event.params.from) 
   let newOwner = getOrCreateAccount(event.params.to)
- if(domain!=null){
-  domain.previousOwner = previousOwner.id;
-  domain.owner = newOwner.id;
- }
+//  if(domain!=null){
+//   domain.previousOwner = previousOwner.id;
+//   domain.owner = newOwner.id;
+//  }
     
   
  

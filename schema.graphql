@@ -1,4 +1,4 @@
-type Domain @entity (immutable: true){
+type Domain @entity{
   id: ID!
   tokenId:BigInt!
   name:String!
@@ -40,6 +40,7 @@ type RenewedName @entity(immutable: true){
  name: String!
  label:Bytes!
  RenewedDomain:Domain!
+ Registration:RegisteredName!
  expires:BigInt!
  cost: BigInt!
  }

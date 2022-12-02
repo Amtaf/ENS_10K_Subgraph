@@ -71,6 +71,7 @@ export function getOrCreateRenewedName(id: string, expires: BigInt): RenewedName
   let renewed = RenewedName.load(id);
   if(renewed==null){
     renewed = new RenewedName(id);
+    
     renewed.expires = expires;
   }
   return renewed as RenewedName

@@ -1,13 +1,13 @@
 {
-  "name": "ENS_10k",
+  "name": "ens_10k",
   "license": "UNLICENSED",
   "scripts": {
     "codegen": "graph codegen",
     "build": "graph build",
-    "deploy": "graph deploy --node https://api.thegraph.com/deploy/ amtaf/ENS_10k",
-    "create-local": "graph create --node http://localhost:8020/ amtaf/ENS_10k",
-    "remove-local": "graph remove --node http://localhost:8020/ amtaf/ENS_10k",
-    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 amtaf/ENS_10k",
+    "deploy": "graph deploy --node https://api.thegraph.com/deploy/amtaf/ens_10k",
+    "create-local": "graph create --node http://localhost:8020/amtaf/ens_10k",
+    "remove-local": "graph remove --node http://localhost:8020/amtaf/ens_10k",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 amtaf/ens_10k",
     "test": "graph test"
   },
   "dependencies": {

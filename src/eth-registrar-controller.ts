@@ -9,7 +9,7 @@ import {
 import { Domain,OwnerAccount,RegisteredName,RenewedName } from "../generated/schema";
 
 import { getOrCreateAccount ,createDomain, getDomain ,getOrCreateNameRegistered, getOrCreateRenewedName} from "./eth-registrar-helper"
-import { uint256ToByteArray, validateNumber } from "./utils";
+import { uint256ToByteArray, validateNumber,createEventID, byteArrayFromHex } from "./utils";
 
 export function getNameRegistered(name: string): RegisteredName| null{
   let regname = RegisteredName.load(name)
@@ -30,7 +30,7 @@ let account = getOrCreateAccount(event.params.owner)
     if(nameReg){
       log.info("Registered ENS:",[nameReg])
       if(validateNumber(nameReg)){
-        getOrCreateNameRegistered(event.transaction.hash,event.params.name,event.params.label,event.params.owner.toHexString(),event.params.cost, event.params.expires)
+        getOrCreateNameRegistered(event.params.name,event.params.label,event.params.owner.toHexString(),event.params.cost, event.params.expires)
        
 
       }
@@ -53,15 +53,36 @@ export function handleNameRenewed(
 //   entity.expires = event.params.expires
 //   entity.save()
 //event NameRegistered(string name, bytes32 indexed label, address indexed owner, uint cost, uint expires);
-let regName = getNameRegistered(event.params.name)
-if(regName){
-  getOrCreateRenewedName(event.transaction.hash, event.params.name,
-    event.params.label,
-    event.params.cost,
-    event.params.expires)
+// let regName = getNameRegistered(event.params.name)
+// if(regName){
+//   getOrCreateRenewedName(event.params.id, event.params.name,
+//     event.params.label,
+//     event.params.cost,
+//     event.params.expires)
+// }
+let tokenId = event.params.label.toHexString();
+let domain = Domain.load(tokenId)
+if (domain){
+  domain.expires = event.params.expires
+  domain.duration =  event.block.timestamp
+  domain.save()
+}
+let registration = RegisteredName.load(tokenId)
+  if(registration){
+    registration.expires = event.params.expires
+    registration.save()
+
+    
+    let registrationEvent = new RenewedName(createEventID(event))
+    registrationEvent.name
+    registrationEvent.expires = event.params.expires
+    registrationEvent.cost = event.transaction.value
+    registrationEvent.save()
+  }
+
 }
 
- }
+ 
 
 
 
