@@ -61,6 +61,4 @@ dataSources:
           handler: handleNameRegistered
         - event: NameRenewed(string,indexed bytes32,uint256,uint256)
           handler: handleNameRenewed
-        - event: OwnershipTransferred(indexed address,indexed address)
-          handler: handleOwnershipTransferred
       file: ./src/eth-registrar-controller.ts

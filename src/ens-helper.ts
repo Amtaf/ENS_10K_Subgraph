@@ -34,31 +34,33 @@ return account;
 // }
 
 //function to create  Domain
-export function createDomain(tokenId: BigInt, name:string, owner:string ,duration:BigInt): Domain{
+export function createDomain(tokenId: BigInt, name:string, owner:string ,expires:BigInt): Domain{
   let domain = new Domain(tokenId.toString());
   domain.tokenId= tokenId;
   domain.name = name;
   domain.owner = owner;
-  domain.duration = duration
+  domain.expires = expires;
   domain.save();
   return domain;
 }
 
 //function to get Domain
 
-export function getDomain(tokenId: BigInt): Domain | null{
+export function getDomain(tokenId: BigInt): Domain {
   let domain = Domain.load(tokenId.toString());
-  return domain;
+  return domain as Domain;
 
 }
 //get or create domain registered
 //owner:string, registrationDate:BigInt, expires:BigInt, cost: BigInt, 
-export function getOrCreateNameRegistered(id: string, owner: string, expires: BigInt): RegisteredName {
+export function getOrCreateNameRegistered(id: string, owner: string, expires: BigInt, domain: string, cost:BigInt): RegisteredName {
   
   let name = RegisteredName.load(id);
     if(name==null){
       name = new RegisteredName(id)
+      name.domain = domain
       name.owner = owner;
+      name.cost = cost;
       name.updateRegistry = true;
       name.expires = expires;
 

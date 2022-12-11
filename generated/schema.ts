@@ -51,13 +51,21 @@ export class Domain extends Entity {
     this.set("tokenId", Value.fromBigInt(value));
   }
 
-  get name(): string {
+  get name(): string | null {
     let value = this.get("name");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set name(value: string) {
-    this.set("name", Value.fromString(value));
+  set name(value: string | null) {
+    if (!value) {
+      this.unset("name");
+    } else {
+      this.set("name", Value.fromString(<string>value));
+    }
   }
 
   get labelName(): string | null {
@@ -103,15 +111,6 @@ export class Domain extends Entity {
     this.set("owner", Value.fromString(value));
   }
 
-  get previousOwner(): string {
-    let value = this.get("previousOwner");
-    return value!.toString();
-  }
-
-  set previousOwner(value: string) {
-    this.set("previousOwner", Value.fromString(value));
-  }
-
   get createdAt(): BigInt {
     let value = this.get("createdAt");
     return value!.toBigInt();
@@ -121,13 +120,21 @@ export class Domain extends Entity {
     this.set("createdAt", Value.fromBigInt(value));
   }
 
-  get duration(): BigInt {
+  get duration(): BigInt | null {
     let value = this.get("duration");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set duration(value: BigInt) {
-    this.set("duration", Value.fromBigInt(value));
+  set duration(value: BigInt | null) {
+    if (!value) {
+      this.unset("duration");
+    } else {
+      this.set("duration", Value.fromBigInt(<BigInt>value));
+    }
   }
 
   get expires(): BigInt {
@@ -137,6 +144,15 @@ export class Domain extends Entity {
 
   set expires(value: BigInt) {
     this.set("expires", Value.fromBigInt(value));
+  }
+
+  get events(): Array<string> {
+    let value = this.get("events");
+    return value!.toStringArray();
+  }
+
+  set events(value: Array<string>) {
+    this.set("events", Value.fromStringArray(value));
   }
 }
 
@@ -187,6 +203,109 @@ export class OwnerAccount extends Entity {
 
   set domain(value: Array<string>) {
     this.set("domain", Value.fromStringArray(value));
+  }
+}
+
+export class Registration extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Registration entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type Registration must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("Registration", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Registration | null {
+    return changetype<Registration | null>(store.get("Registration", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get domain(): string {
+    let value = this.get("domain");
+    return value!.toString();
+  }
+
+  set domain(value: string) {
+    this.set("domain", Value.fromString(value));
+  }
+
+  get registrationDate(): BigInt {
+    let value = this.get("registrationDate");
+    return value!.toBigInt();
+  }
+
+  set registrationDate(value: BigInt) {
+    this.set("registrationDate", Value.fromBigInt(value));
+  }
+
+  get expires(): BigInt {
+    let value = this.get("expires");
+    return value!.toBigInt();
+  }
+
+  set expires(value: BigInt) {
+    this.set("expires", Value.fromBigInt(value));
+  }
+
+  get registrant(): string {
+    let value = this.get("registrant");
+    return value!.toString();
+  }
+
+  set registrant(value: string) {
+    this.set("registrant", Value.fromString(value));
+  }
+
+  get cost(): BigInt {
+    let value = this.get("cost");
+    return value!.toBigInt();
+  }
+
+  set cost(value: BigInt) {
+    this.set("cost", Value.fromBigInt(value));
+  }
+
+  get labelName(): string | null {
+    let value = this.get("labelName");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set labelName(value: string | null) {
+    if (!value) {
+      this.unset("labelName");
+    } else {
+      this.set("labelName", Value.fromString(<string>value));
+    }
+  }
+
+  get events(): Array<string> {
+    let value = this.get("events");
+    return value!.toStringArray();
+  }
+
+  set events(value: Array<string>) {
+    this.set("events", Value.fromStringArray(value));
   }
 }
 
@@ -248,31 +367,82 @@ export class RegisteredName extends Entity {
     this.set("updateRegistry", Value.fromBoolean(value));
   }
 
-  get cost(): BigInt {
+  get cost(): BigInt | null {
     let value = this.get("cost");
-    return value!.toBigInt();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toBigInt();
+    }
   }
 
-  set cost(value: BigInt) {
-    this.set("cost", Value.fromBigInt(value));
+  set cost(value: BigInt | null) {
+    if (!value) {
+      this.unset("cost");
+    } else {
+      this.set("cost", Value.fromBigInt(<BigInt>value));
+    }
   }
 
-  get labelName(): string {
+  get labelName(): string | null {
     let value = this.get("labelName");
-    return value!.toString();
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
   }
 
-  set labelName(value: string) {
-    this.set("labelName", Value.fromString(value));
+  set labelName(value: string | null) {
+    if (!value) {
+      this.unset("labelName");
+    } else {
+      this.set("labelName", Value.fromString(<string>value));
+    }
   }
 
-  get name(): string {
+  get name(): string | null {
     let value = this.get("name");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set name(value: string | null) {
+    if (!value) {
+      this.unset("name");
+    } else {
+      this.set("name", Value.fromString(<string>value));
+    }
+  }
+
+  get registration(): string {
+    let value = this.get("registration");
     return value!.toString();
   }
 
-  set name(value: string) {
-    this.set("name", Value.fromString(value));
+  set registration(value: string) {
+    this.set("registration", Value.fromString(value));
+  }
+
+  get blockNumber(): i32 {
+    let value = this.get("blockNumber");
+    return value!.toI32();
+  }
+
+  set blockNumber(value: i32) {
+    this.set("blockNumber", Value.fromI32(value));
+  }
+
+  get transactionID(): Bytes {
+    let value = this.get("transactionID");
+    return value!.toBytes();
+  }
+
+  set transactionID(value: Bytes) {
+    this.set("transactionID", Value.fromBytes(value));
   }
 
   get registrationDate(): BigInt | null {
@@ -360,22 +530,48 @@ export class RenewedName extends Entity {
     this.set("label", Value.fromBytes(value));
   }
 
-  get RenewedDomain(): string {
+  get RenewedDomain(): string | null {
     let value = this.get("RenewedDomain");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set RenewedDomain(value: string | null) {
+    if (!value) {
+      this.unset("RenewedDomain");
+    } else {
+      this.set("RenewedDomain", Value.fromString(<string>value));
+    }
+  }
+
+  get registration(): string {
+    let value = this.get("registration");
     return value!.toString();
   }
 
-  set RenewedDomain(value: string) {
-    this.set("RenewedDomain", Value.fromString(value));
+  set registration(value: string) {
+    this.set("registration", Value.fromString(value));
   }
 
-  get Registration(): string {
-    let value = this.get("Registration");
-    return value!.toString();
+  get blockNumber(): i32 {
+    let value = this.get("blockNumber");
+    return value!.toI32();
   }
 
-  set Registration(value: string) {
-    this.set("Registration", Value.fromString(value));
+  set blockNumber(value: i32) {
+    this.set("blockNumber", Value.fromI32(value));
+  }
+
+  get transactionID(): Bytes {
+    let value = this.get("transactionID");
+    return value!.toBytes();
+  }
+
+  set transactionID(value: Bytes) {
+    this.set("transactionID", Value.fromBytes(value));
   }
 
   get expires(): BigInt {
@@ -394,6 +590,168 @@ export class RenewedName extends Entity {
 
   set cost(value: BigInt) {
     this.set("cost", Value.fromBigInt(value));
+  }
+}
+
+export class transfer extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save transfer entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type transfer must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("transfer", id.toString(), this);
+    }
+  }
+
+  static load(id: string): transfer | null {
+    return changetype<transfer | null>(store.get("transfer", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get domain(): string {
+    let value = this.get("domain");
+    return value!.toString();
+  }
+
+  set domain(value: string) {
+    this.set("domain", Value.fromString(value));
+  }
+
+  get blockNumber(): i32 {
+    let value = this.get("blockNumber");
+    return value!.toI32();
+  }
+
+  set blockNumber(value: i32) {
+    this.set("blockNumber", Value.fromI32(value));
+  }
+
+  get transactionID(): Bytes {
+    let value = this.get("transactionID");
+    return value!.toBytes();
+  }
+
+  set transactionID(value: Bytes) {
+    this.set("transactionID", Value.fromBytes(value));
+  }
+
+  get owner(): string {
+    let value = this.get("owner");
+    return value!.toString();
+  }
+
+  set owner(value: string) {
+    this.set("owner", Value.fromString(value));
+  }
+
+  get oldOwner(): string {
+    let value = this.get("oldOwner");
+    return value!.toString();
+  }
+
+  set oldOwner(value: string) {
+    this.set("oldOwner", Value.fromString(value));
+  }
+}
+
+export class Mint extends Entity {
+  constructor(id: string) {
+    super();
+    this.set("id", Value.fromString(id));
+  }
+
+  save(): void {
+    let id = this.get("id");
+    assert(id != null, "Cannot save Mint entity without an ID");
+    if (id) {
+      assert(
+        id.kind == ValueKind.STRING,
+        `Entities of type Mint must have an ID of type String but the id '${id.displayData()}' is of type ${id.displayKind()}`
+      );
+      store.set("Mint", id.toString(), this);
+    }
+  }
+
+  static load(id: string): Mint | null {
+    return changetype<Mint | null>(store.get("Mint", id));
+  }
+
+  get id(): string {
+    let value = this.get("id");
+    return value!.toString();
+  }
+
+  set id(value: string) {
+    this.set("id", Value.fromString(value));
+  }
+
+  get creator(): string | null {
+    let value = this.get("creator");
+    if (!value || value.kind == ValueKind.NULL) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set creator(value: string | null) {
+    if (!value) {
+      this.unset("creator");
+    } else {
+      this.set("creator", Value.fromString(<string>value));
+    }
+  }
+
+  get domain(): string {
+    let value = this.get("domain");
+    return value!.toString();
+  }
+
+  set domain(value: string) {
+    this.set("domain", Value.fromString(value));
+  }
+
+  get blockNumber(): i32 {
+    let value = this.get("blockNumber");
+    return value!.toI32();
+  }
+
+  set blockNumber(value: i32) {
+    this.set("blockNumber", Value.fromI32(value));
+  }
+
+  get transactionID(): Bytes {
+    let value = this.get("transactionID");
+    return value!.toBytes();
+  }
+
+  set transactionID(value: Bytes) {
+    this.set("transactionID", Value.fromBytes(value));
+  }
+
+  get owner(): string {
+    let value = this.get("owner");
+    return value!.toString();
+  }
+
+  set owner(value: string) {
+    this.set("owner", Value.fromString(value));
   }
 }
 

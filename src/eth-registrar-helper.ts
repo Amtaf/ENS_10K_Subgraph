@@ -23,12 +23,12 @@ return account;
 
 
 //function to create  Domain
-export function createDomain(tokenId: BigInt, name:string, owner:string ,duration:BigInt): Domain{
+export function createDomain(tokenId: BigInt, name:string, owner:string ,duration:BigInt , expires: BigInt): Domain{
     let domain = new Domain(tokenId.toString());
     domain.tokenId= tokenId;
     domain.name = name;
     domain.owner = owner;
-    domain.duration = duration
+    domain.expires = expires;
     domain.save();
     return domain;
   }

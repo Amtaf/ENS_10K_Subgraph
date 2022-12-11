@@ -6,10 +6,13 @@ import {
   OwnershipTransferred
 } from "../generated/EthRegistrarController/EthRegistrarController"
 
-import { Domain,OwnerAccount,RegisteredName,RenewedName } from "../generated/schema";
+import { Domain,OwnerAccount,Registration,RegisteredName,RenewedName,transfer,Mint} from "../generated/schema";
 
 import { getOrCreateAccount ,createDomain, getDomain ,getOrCreateNameRegistered, getOrCreateRenewedName} from "./eth-registrar-helper"
 import { uint256ToByteArray, validateNumber,createEventID, byteArrayFromHex } from "./utils";
+
+//will be used for cheking transfers or destroying a token
+const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 export function getNameRegistered(name: string): RegisteredName| null{
   let regname = RegisteredName.load(name)
@@ -25,21 +28,41 @@ export function handleNameRegistered(
 
 let account = getOrCreateAccount(event.params.owner)
   if(account){
-    let lbl = event.transaction.hash
-    let nameReg = ens.nameByHash(lbl.toHexString())
+    let lbl = event.params.name
+    let nameReg = ens.nameByHash(lbl)
     if(nameReg){
       log.info("Registered ENS:",[nameReg])
       if(validateNumber(nameReg)){
         getOrCreateNameRegistered(event.params.name,event.params.label,event.params.owner.toHexString(),event.params.cost, event.params.expires)
-       
-
+        let tokenId = byteArrayFromHex(event.params.name);
+        let domain = Domain.load(tokenId.toHexString())
+        if (domain){
+          domain.expires = event.params.expires
+          domain.duration =  event.block.timestamp
+          domain.save()
+          
+        let registration = Registration.load(tokenId.toHexString())
+            if(registration){
+                registration.expires = event.params.expires
+                registration.save()
+        let registrationEvent = new RegisteredName(createEventID(event))
+        registrationEvent.registration = registration.id
+        registrationEvent.domain = event.params.name
+        registrationEvent.blockNumber=  event.block.number.toI32()
+        registrationEvent.transactionID = event.transaction.hash
+        registrationEvent.cost= event.transaction.value
+        registrationEvent.owner = account.id
+        registrationEvent.expires = event.params.expires
+        registrationEvent.save()
+            }
       }
     }
   }
   //check if account exists, if it does check for the registered domain 
   //but should return validated number type of name
 
- }
+}
+}
 
 export function handleNameRenewed(
   event: NameRenewed
@@ -66,33 +89,22 @@ if (domain){
   domain.expires = event.params.expires
   domain.duration =  event.block.timestamp
   domain.save()
-}
-let registration = RegisteredName.load(tokenId)
-  if(registration){
-    registration.expires = event.params.expires
-    registration.save()
-
-    
-    let registrationEvent = new RenewedName(createEventID(event))
-    registrationEvent.name
-    registrationEvent.expires = event.params.expires
-    registrationEvent.cost = event.transaction.value
-    registrationEvent.save()
-  }
-
-}
-
- 
-
-
-
-export function handleOwnershipTransferred(
-  event: OwnershipTransferred
-): void {
-
+  let registration = RegisteredName.load(tokenId)
+    if(registration){
+      registration.expires = event.params.expires
+      registration.save()
   
-  getOrCreateAccount(event.params.previousOwner) 
-  getOrCreateAccount(event.params.newOwner)
- 
-    
+      
+      let registrationEvent = new RenewedName(createEventID(event))
+      registrationEvent.name
+      registrationEvent.blockNumber = event.block.number.toI32()
+      registrationEvent.transactionID = event.transaction.hash
+      registrationEvent.expires = event.params.expires
+      registrationEvent.cost = event.transaction.value
+      registrationEvent.save()
+    }
 }
+
+}
+
+

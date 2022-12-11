@@ -1,14 +1,14 @@
 type Domain @entity{
   id: ID!
   tokenId:BigInt!
-  name:String!
+  name:String
   labelName:String
   labelHash:Bytes
   owner:OwnerAccount!
-  previousOwner:OwnerAccount!
   createdAt:BigInt!
-  duration:BigInt!
+  duration:BigInt
   expires:BigInt!
+  events: [DomainEvent!]! @derivedFrom(field: "domain")
 
 
 }
@@ -20,30 +20,77 @@ type OwnerAccount @entity{
 
 }
 
- type RegisteredName @entity(immutable: true){
+interface DomainEvent {
+  id: ID!
+  domain: Domain!
+  blockNumber: Int!
+  transactionID: Bytes!
+}
+
+type Registration @entity {
+  id: ID!
+  domain: Domain!
+  registrationDate: BigInt!
+  expires: BigInt!
+  registrant: OwnerAccount!
+  cost: BigInt!
+  labelName: String
+  events: [RegistrationEvent!]! @derivedFrom(field: "registration")
+}
+interface RegistrationEvent {
+  id: ID!
+  registration: Registration!
+  blockNumber: Int!
+  transactionID: Bytes!
+}
+
+ type RegisteredName implements RegistrationEvent @entity(immutable: true){
   id:ID!
   domain:Domain!
   owner:OwnerAccount!
-  updateRegistry: Boolean! 
-  cost:BigInt!
-  labelName:String!
-  name:String!
+  updateRegistry: Boolean
+  cost:BigInt
+  labelName:String
+  name:String
+  registration: Registration!
+  blockNumber: Int!
+  transactionID: Bytes!
   registrationDate:BigInt
   expires: BigInt!
   
 }
 
 
-type RenewedName @entity(immutable: true){
+type RenewedName implements RegistrationEvent @entity(immutable: true){
  id:ID!
  owner:OwnerAccount!
  name: String!
  label:Bytes!
- RenewedDomain:Domain!
- Registration:RegisteredName!
+ RenewedDomain:Domain
+ registration: Registration!
+ blockNumber: Int!
+ transactionID: Bytes!
  expires:BigInt!
  cost: BigInt!
  }
+
+ type transfer implements DomainEvent @entity {
+  id: ID!
+  domain: Domain!
+  blockNumber: Int!
+  transactionID: Bytes!
+  owner: OwnerAccount!
+  oldOwner: OwnerAccount!
+}
+
+type Mint implements DomainEvent @entity {
+  id: ID!
+  creator: OwnerAccount
+  domain: Domain!
+  blockNumber: Int!
+  transactionID: Bytes!
+  owner: OwnerAccount!
+}
 
 # type EthRegistrarControllerNameRegistered @entity {
 #   id: ID!
