@@ -8,7 +8,7 @@ dataSources:
     source:
       address: "0x57f1887a8BF19b14fC0dF6Fd9B2acc9Af147eA85"
       abi: ENS
-      startBlock: 15896076
+      startBlock: 15581665
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6
@@ -42,7 +42,7 @@ dataSources:
     source:
       address: "0x283Af0B28c62C092C9727F1Ee09c02CA627EB7F5"
       abi: EthRegistrarController
-      startBlock: 15994722
+      startBlock: 15972741
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

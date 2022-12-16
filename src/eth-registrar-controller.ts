@@ -29,40 +29,36 @@ export function handleNameRegistered(
 let account = getOrCreateAccount(event.params.owner)
   if(account){
     let lbl = event.params.name
+    let registration = new Registration(lbl)
+    registration.domain = event.params.name
+    registration.cost = event.transaction.value;
+    registration.registrant = account.id
+    registration.registrationDate = event.block.timestamp
+    registration.expires = event.params.expires
+
     let nameReg = ens.nameByHash(lbl)
-    if(nameReg){
-      log.info("Registered ENS:",[nameReg])
-      if(validateNumber(nameReg)){
-        getOrCreateNameRegistered(event.params.name,event.params.label,event.params.owner.toHexString(),event.params.cost, event.params.expires)
-        let tokenId = byteArrayFromHex(event.params.name);
-        let domain = Domain.load(tokenId.toHexString())
-        if (domain){
-          domain.expires = event.params.expires
-          domain.duration =  event.block.timestamp
-          domain.save()
-          
-        let registration = Registration.load(tokenId.toHexString())
-            if(registration){
-                registration.expires = event.params.expires
-                registration.save()
-        let registrationEvent = new RegisteredName(createEventID(event))
+    if(nameReg!=null){
+     
+    registration.labelName = nameReg
+    }
+    registration.save()
+
+    let registrationEvent = new RegisteredName(createEventID(event))
         registrationEvent.registration = registration.id
-        registrationEvent.domain = event.params.name
         registrationEvent.blockNumber=  event.block.number.toI32()
         registrationEvent.transactionID = event.transaction.hash
-        registrationEvent.cost= event.transaction.value
-        registrationEvent.owner = account.id
         registrationEvent.expires = event.params.expires
+        registrationEvent.owner = account.id
         registrationEvent.save()
             }
       }
-    }
-  }
+  
+
   //check if account exists, if it does check for the registered domain 
   //but should return validated number type of name
 
-}
-}
+
+
 
 export function handleNameRenewed(
   event: NameRenewed
@@ -89,6 +85,8 @@ if (domain){
   domain.expires = event.params.expires
   domain.duration =  event.block.timestamp
   domain.save()
+  //getDomain(event.params.label)
+
   let registration = RegisteredName.load(tokenId)
     if(registration){
       registration.expires = event.params.expires
@@ -96,7 +94,7 @@ if (domain){
   
       
       let registrationEvent = new RenewedName(createEventID(event))
-      registrationEvent.name
+      registrationEvent.registration = registration.id
       registrationEvent.blockNumber = event.block.number.toI32()
       registrationEvent.transactionID = event.transaction.hash
       registrationEvent.expires = event.params.expires

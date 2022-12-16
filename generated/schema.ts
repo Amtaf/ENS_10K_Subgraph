@@ -340,15 +340,6 @@ export class RegisteredName extends Entity {
     this.set("id", Value.fromString(value));
   }
 
-  get domain(): string {
-    let value = this.get("domain");
-    return value!.toString();
-  }
-
-  set domain(value: string) {
-    this.set("domain", Value.fromString(value));
-  }
-
   get owner(): string {
     let value = this.get("owner");
     return value!.toString();
@@ -501,50 +492,6 @@ export class RenewedName extends Entity {
 
   set id(value: string) {
     this.set("id", Value.fromString(value));
-  }
-
-  get owner(): string {
-    let value = this.get("owner");
-    return value!.toString();
-  }
-
-  set owner(value: string) {
-    this.set("owner", Value.fromString(value));
-  }
-
-  get name(): string {
-    let value = this.get("name");
-    return value!.toString();
-  }
-
-  set name(value: string) {
-    this.set("name", Value.fromString(value));
-  }
-
-  get label(): Bytes {
-    let value = this.get("label");
-    return value!.toBytes();
-  }
-
-  set label(value: Bytes) {
-    this.set("label", Value.fromBytes(value));
-  }
-
-  get RenewedDomain(): string | null {
-    let value = this.get("RenewedDomain");
-    if (!value || value.kind == ValueKind.NULL) {
-      return null;
-    } else {
-      return value.toString();
-    }
-  }
-
-  set RenewedDomain(value: string | null) {
-    if (!value) {
-      this.unset("RenewedDomain");
-    } else {
-      this.set("RenewedDomain", Value.fromString(<string>value));
-    }
   }
 
   get registration(): string {

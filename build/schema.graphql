@@ -46,7 +46,6 @@ interface RegistrationEvent {
 
  type RegisteredName implements RegistrationEvent @entity(immutable: true){
   id:ID!
-  domain:Domain!
   owner:OwnerAccount!
   updateRegistry: Boolean
   cost:BigInt
@@ -63,10 +62,6 @@ interface RegistrationEvent {
 
 type RenewedName implements RegistrationEvent @entity(immutable: true){
  id:ID!
- owner:OwnerAccount!
- name: String!
- label:Bytes!
- RenewedDomain:Domain
  registration: Registration!
  blockNumber: Int!
  transactionID: Bytes!

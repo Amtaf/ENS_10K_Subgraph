@@ -46,9 +46,9 @@ export function createDomain(tokenId: BigInt, name:string, owner:string ,expires
 
 //function to get Domain
 
-export function getDomain(tokenId: BigInt): Domain {
+export function getDomain(tokenId: BigInt): Domain | null{
   let domain = Domain.load(tokenId.toString());
-  return domain as Domain;
+  return domain;
 
 }
 //get or create domain registered
@@ -58,7 +58,6 @@ export function getOrCreateNameRegistered(id: string, owner: string, expires: Bi
   let name = RegisteredName.load(id);
     if(name==null){
       name = new RegisteredName(id)
-      name.domain = domain
       name.owner = owner;
       name.cost = cost;
       name.updateRegistry = true;

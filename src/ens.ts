@@ -46,10 +46,9 @@ export function handleNameRegistered(event: NameRegistered): void{
         //getOrCreateNameRegistered(event.params.id.toHexString(),event.params.owner.toHexString(), event.params.expires,event.params)     
    let registrationEvent = new RegisteredName(createEventID(event))
         registrationEvent.registration = registration.id
-        registrationEvent.domain = event.params.id.toHexString()
+        registrationEvent.owner = account.id
         registrationEvent.transactionID = event.transaction.hash
         registrationEvent.blockNumber= event.block.number.toI32()
-        registrationEvent.owner = account.id
         registrationEvent.expires = event.params.expires
         registrationEvent.save()
               }
@@ -76,7 +75,7 @@ if (domain){
   domain.expires = event.params.expires
   domain.duration =  event.block.timestamp
   domain.save()
-  getDomain(event.params.id)
+  //getDomain(event.params.id)
 
   let registration = Registration.load(tokenId)
     if(registration){
@@ -86,7 +85,6 @@ if (domain){
       
       let registrationEvent = new RenewedName(createEventID(event))
       registrationEvent.registration = registration.id
-      registrationEvent.name
       registrationEvent.blockNumber=  event.block.number.toI32()
       registrationEvent.transactionID = event.transaction.hash
       registrationEvent.expires = event.params.expires
