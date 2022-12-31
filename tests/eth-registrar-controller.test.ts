@@ -7,9 +7,9 @@ import {
   afterAll
 } from "matchstick-as/assembly/index"
 import { Bytes, Address, BigInt } from "@graphprotocol/graph-ts"
-import { EthRegistrarControllerNameRegistered } from "../generated/schema"
-import { EthRegistrarControllerNameRegistered as EthRegistrarControllerNameRegisteredEvent } from "../generated/EthRegistrarController/EthRegistrarController"
-import { handleEthRegistrarControllerNameRegistered } from "../src/eth-registrar-controller"
+import { RegisteredName } from "../generated/schema"
+import { NameRegistered as EthRegistrarControllerNameRegisteredEvent } from "../generated/EthRegistrarController/EthRegistrarController"
+import { handleNameRegistered } from "../src/eth-registrar-controller"
 import { createEthRegistrarControllerNameRegisteredEvent } from "./eth-registrar-controller-utils"
 
 // Tests structure (matchstick-as >=0.5.0)
@@ -29,7 +29,7 @@ describe("Describe entity assertions", () => {
       cost,
       expires
     )
-    handleEthRegistrarControllerNameRegistered(
+    handleNameRegistered(
       newEthRegistrarControllerNameRegisteredEvent
     )
   })
