@@ -1,7 +1,5 @@
 ENS 10K MANUAL TESTING DOCUMENT
 
-Bismillah
-
 
 Run the querries below to do a manual test and get the following results:
 
